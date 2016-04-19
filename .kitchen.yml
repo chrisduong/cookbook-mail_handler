@@ -1,0 +1,31 @@
+---
+driver:
+  name: docker
+  http_proxy: <%= ENV['my_http_proxy'] %>
+  https_proxy: <%= ENV['my_https_proxy'] %>
+
+settings:
+  parallel: true
+
+provisioner:
+  name: chef_zero
+  require_chef_omnibus: false
+
+# Uncomment the following verifier to leverage Inspec instead of Busser (the
+# default verifier)
+# verifier:
+#   name: inspec
+
+platforms:
+  - name: chef/ubuntu-14.04
+    driver_config:
+      image: chef/ubuntu-14.04:12.8
+      platform: ubuntu
+
+
+suites:
+  - name: default
+    run_list:
+      - recipe[exim4-light]
+      - recipe[mail_handler::default]
+    attributes:
